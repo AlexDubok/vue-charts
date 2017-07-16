@@ -76,7 +76,11 @@ module.exports = {
                 name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
             }
         }
-      }
+      },
+     {
+         test: /\.json$/,
+         use: 'json-loader'
+     }
     ]
   }
 }
