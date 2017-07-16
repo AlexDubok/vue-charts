@@ -1,0 +1,25 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version",
+            "last 1 edge version"
+        ],
+        "uglify": true
+      },
+        "useBuiltIns": true
+    }],
+    "stage-2"
+  ],
+  "plugins": ["transform-runtime"],
+  "env": {
+    "test": {
+      "presets": ["env", "stage-2"],
+      "plugins": ["istanbul"]
+    }
+  }
+}
