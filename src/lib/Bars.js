@@ -5,12 +5,11 @@ export default class Bars extends Chart {
     init() {
         const { width, height, data } = this.config;
         const barWidth = this.config.barWidth || width / data.length;
+        const scaleRange = data.reduce((max, current) => Math.max(max, current.y), 0);
 
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data)])
-            .range([0, height]);
-
-        console.log('y:', d3.scaleOrdinal('red')(15));
+            .domain([0, scaleRange])
+            .range([0, height - 20]);
 
         const chart = d3.select(this.container)
             .append('svg')
@@ -25,17 +24,26 @@ export default class Bars extends Chart {
         const plot = chart.append('g')
             .classed('plot', true);
 
-        plot.selectAll('rect')
+        const bar = plot.selectAll('g')
             .data(data)
-            .enter().append('rect')
-            .attr('height', (d) => {
-                console.log(y(d));
+            .enter().append('g');
 
-                return y(d);
-            })
+        bar.append('rect')
+            .attr('height', d => y(d.y))
             .attr('width', barWidth - 1)
             .attr('x', (d, i) => i * barWidth)
-            .attr('y', d => height - y(d))
+            .attr('y', d => height - y(d.y))
             .attr('fill', d3.scaleOrdinal(d3.schemeCategory20c));
+
+
+        if (this.config.dataLabels) {
+            console.log('DATALABELS');
+            const { dataLabels } = this.config;
+            bar.append('text')
+                .attr('x', (d, i) => i * barWidth)
+                .attr('y', height - 300)
+                .text(d => d[dataLabels.labelKey])
+                .classed('label', true);
+        }
     }
 }

@@ -7,6 +7,7 @@
 
 <script>
 import Bars from '../lib/Bars';
+import collegeData from '../datasets/college_enrolment.json';
 
 export default {
     name: 'hello',
@@ -17,14 +18,24 @@ export default {
     },
     mounted() {
         // `this` points to the vm instance
+        const data = collegeData.map(item => ({
+            state: item.State,
+            y    : item._2017 // eslint-disable-line
+        }));
         const chart = this.$refs.chart;
 
         const config = {
-            data  : [4, 8, 15, 16, 23, 42],
-            width : 600,
+            data,
+            width : 800,
             height: 600,
             style : {
                 border: '2px solid tomato'
+            },
+            dataLabels: {
+                labelKey: 'state',
+                style   : {
+                    transform: 'rotate(-45deg)'
+                }
             }
         };
         const barChart = new Bars(chart, config);
@@ -34,8 +45,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
   h2 {
     color: tomato;
+  }
+  .label {
+      fill: red;
+      transform: rotate(45deg);
+      transform-origin: 100%;
   }
 </style>
