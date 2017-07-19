@@ -45,6 +45,7 @@ module.exports = {
     ],
     "indent": ["error", 4],
     "comma-dangle": ["error", "never"],
-    "no-console": 0
+    "no-console": 0,
+    "no-confusing-arrow": 0
   }
 }
