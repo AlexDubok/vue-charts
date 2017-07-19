@@ -17,25 +17,25 @@ export default {
         };
     },
     mounted() {
-        // `this` points to the vm instance
-        const data = collegeData.map(item => ({
-            state: item.State,
-            y    : item._2017 // eslint-disable-line
-        }));
+        const data = collegeData.map(item =>  ({ y: item._2017, color: '#3cafe2' })); // eslint-disable-line
         const chart = this.$refs.chart;
 
         const config = {
-            data,
-            width : 800,
-            height: 600,
-            style : {
-                border: '2px solid tomato'
+            chart: {
+                width : 800,
+                height: 600
+                // style : {
+                //     border: '2px solid tomato'
+                // },
             },
-            dataLabels: {
-                labelKey: 'state',
-                style   : {
+            xAxis: {
+                labels    : collegeData.map(item => item.State),
+                labelStyle: {
                     transform: 'rotate(-45deg)'
                 }
+            },
+            series: {
+                data
             }
         };
         const barChart = new Bars(chart, config);
