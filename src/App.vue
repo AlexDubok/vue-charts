@@ -1,21 +1,25 @@
 <template>
   <div id="app">
-    <hello />
+    <layout />
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello';
+import Layout from './components/Layout';
 
 export default {
     name      : 'app',
     components: {
-        Hello
+        Layout
     }
 };
 </script>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

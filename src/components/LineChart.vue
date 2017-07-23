@@ -47,6 +47,7 @@ export default {
 <style>
     .lineChart {
         position: relative;
+        margin-bottom: 40px;
     }
     .line {
         fill: none;

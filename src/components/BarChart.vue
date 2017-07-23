@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>World's largest cities per 2014</h2>
+    <h5>Source: Wikipedia</h5>
     <div class='barChart' ref='barChart'></div>
   </div>
 </template>
@@ -10,12 +11,7 @@ import Bars from '../lib/Bars';
 import cityPopulation from '../datasets/cityPopulation.json';
 
 export default {
-    name: 'hello',
-    data() {
-        return {
-            msg: 'Welcome to Your Vue.js App'
-        };
-    },
+    name: 'bar-chart',
     mounted() {
         const data = cityPopulation.map(item => ({ y: item[1], color: '#3cafe2', city: item[0] })); // eslint-disable-line
         const bars = this.$refs.barChart;
@@ -53,17 +49,10 @@ export default {
     h2 {
         color: tomato;
     }
-    .tooltip {
-        position: absolute;
-        transition: all .3s ease;
-        background: black;
-        color: ivory;
-        transform: translateX(-50%);
-        padding: 10px;
-    }
 
     .barChart {
         position: relative;
+        margin-bottom: 40px;
     }
 
     .xAxis-label {

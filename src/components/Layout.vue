@@ -30,7 +30,6 @@ export default {
         align-items: center;
     }
 
-
     .tooltip {
         position: absolute;
         transition: all .3s ease;
