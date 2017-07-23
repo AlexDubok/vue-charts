@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
-    <div ref='chart'></div>
+    <h2>World's largest cities per 2014</h2>
+    <div class='barChart' ref='barChart'></div>
   </div>
 </template>
 
 <script>
 import Bars from '../lib/Bars';
-import collegeData from '../datasets/college_enrolment.json';
+import cityPopulation from '../datasets/cityPopulation.json';
 
 export default {
     name: 'hello',
@@ -17,28 +17,32 @@ export default {
         };
     },
     mounted() {
-        const data = collegeData.map(item =>  ({ y: item._2017, color: '#3cafe2' })); // eslint-disable-line
-        const chart = this.$refs.chart;
+        const data = cityPopulation.map(item => ({ y: item[1], color: '#3cafe2', city: item[0] })); // eslint-disable-line
+        const bars = this.$refs.barChart;
 
         const config = {
             chart: {
                 width : 800,
                 height: 600
-                // style : {
-                //     border: '2px solid tomato'
-                // },
             },
             xAxis: {
-                labels    : collegeData.map(item => item.State),
-                labelStyle: {
-                    transform: 'rotate(-45deg)'
-                }
+                title     : 'City',
+                labelKey  : 'city',
+                labelClass: 'xAxis-label'
+            },
+            yAxis: {
+                title     : 'Population (millions)',
+                labelClass: 'yAxis-label'
             },
             series: {
                 data
+            },
+            tooltip: {
+                className  : 'tooltip',
+                formatLabel: d => `Population in 2008 (${(d.city)}):<br/>${d.y}`
             }
         };
-        const barChart = new Bars(chart, config);
+        const barChart = new Bars(bars, config);
         barChart.init();
     }
 };
@@ -46,12 +50,30 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  h2 {
-    color: tomato;
-  }
-  .label {
-      fill: red;
-      transform: rotate(45deg);
-      transform-origin: 100%;
-  }
+    h2 {
+        color: tomato;
+    }
+    .tooltip {
+        position: absolute;
+        transition: all .3s ease;
+        background: black;
+        color: ivory;
+        transform: translateX(-50%);
+        padding: 10px;
+    }
+
+    .barChart {
+        position: relative;
+    }
+
+    .xAxis-label {
+        font-size: 14px;
+        transform: rotate(-45deg);
+        text-anchor: end;
+    }
+
+    .yAxis-label {
+        font-size: 14px;
+    }
+
 </style>
