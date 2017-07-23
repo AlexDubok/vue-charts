@@ -4,16 +4,10 @@ import Chart from './Chart';
 export default class Bars extends Chart {
     init() {
         const { chart, xAxis, yAxis, series, tooltip } = this.config;
-        const margin = {
-            top   : 20,
-            right : 20,
-            bottom: 100,
-            left  : 70,
-            ...chart.margin
-        };
-        const width = chart.width - margin.right - margin.left;
-        const height = chart.height - margin.top - margin.bottom;
-        const barWidth = chart.barWidth || width / series.data.length;
+
+        // const width = chart.width - margin.right - margin.left;
+        // const height = chart.height - margin.top - margin.bottom;
+        const barWidth = chart.barWidth || this.width / series.data.length;
 
         const { data } = series;
         const values = data.map(d => d.y);
@@ -22,16 +16,17 @@ export default class Bars extends Chart {
 
         const y = d3.scaleLinear()
             .domain([domainMin, domainMax])
-            .range([0, height]);
+            .range([0, this.height]);
 
         const container = d3.select(this.container)
             .append('svg')
-            .attr('width', this.width)
-            .attr('height', this.height);
+            .attr('width', chart.width)
+            .attr('height', chart.height);
 
         const plot = container.append('g')
             .classed('plot', true)
-            .attr('transform', `translate(${margin.left},${margin.top})`);
+            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+
 
         if (tooltip) {
             // Define the div for the tooltip
@@ -39,13 +34,13 @@ export default class Bars extends Chart {
                 .classed(tooltip.className, tooltip.className)
                 .style('opacity', 0);
 
-            this.showTooltip = (d) => {
+            this.showTooltip = (d, i) => {
                 plot.style('cursor', 'pointer');
                 div.transition()
                     .style('opacity', 0.9);
                 div.html(tooltip.formatLabel ? tooltip.formatLabel(d) : d.y)
-                    .style('left', `${d3.event.pageX}px`)
-                    .style('top', `${height - y(d.y) - 40}px`);
+                    .style('left', `${(i * barWidth) + this.margin.left}px`)
+                    .style('top', `${this.height - y(d.y) - 40}px`);
             };
 
             this.hideTooltip = () => {
@@ -61,14 +56,14 @@ export default class Bars extends Chart {
             .attr('height', d => y(d.y))
             .attr('width', barWidth - 1)
             .attr('x', (d, i) => i * barWidth)
-            .attr('y', d => height - y(d.y))
+            .attr('y', d => this.height - y(d.y))
             .attr('fill', (d, i) => d.color ? d.color : d3.schemeCategory20c[i % 20])
             .on('mouseover', this.showTooltip)
             .on('mouseleave', this.hideTooltip);
 
         if (xAxis) {
             this.x = d3.scaleBand()
-                .range([0, width])
+                .range([0, this.width])
                 .domain(data.map(d => d[xAxis.labelKey]));
 
             this.xAxis = d3.axisBottom(this.x)
@@ -79,7 +74,7 @@ export default class Bars extends Chart {
 
             container.append('g')
                 .attr('class', 'xAxis')
-                .attr('transform', `translate(${margin.left},${margin.top + height})`)
+                .attr('transform', `translate(${this.margin.left},${this.margin.top + this.height})`)
                 .call(this.xAxis)
                 .selectAll('text')
                 .attr('dx', '-.8em')
@@ -88,8 +83,8 @@ export default class Bars extends Chart {
 
             if (xAxis.title) {
                 container.append('text')
-                    .attr('y', height + margin.bottom)
-                    .attr('x', margin.left + (width / 2))
+                    .attr('y', this.height + this.margin.bottom)
+                    .attr('x', this.margin.left + (this.width / 2))
                     .attr('dy', '1em')
                     .style('text-anchor', 'middle')
                     .text(xAxis.title);
@@ -99,10 +94,10 @@ export default class Bars extends Chart {
         if (yAxis) {
             const yAxisScale = d3.scaleLinear()
                 .domain([domainMin, domainMax])
-                .range([height, 0]);
+                .range([this.height, 0]);
 
             container.append('g')
-                .attr('transform', `translate(${margin.left},${margin.top})`)
+                .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
                 .call(d3.axisLeft(yAxisScale))
                 .classed(yAxis.labelClass, yAxis.labelClass);
 
@@ -110,7 +105,7 @@ export default class Bars extends Chart {
                 container.append('text')
                     .attr('transform', 'rotate(-90)')
                     .attr('y', 0)
-                    .attr('x', 0 - (height / 2))
+                    .attr('x', 0 - (this.height / 2))
                     .attr('dy', '1em')
                     .style('text-anchor', 'middle')
                     .text(yAxis.title);
