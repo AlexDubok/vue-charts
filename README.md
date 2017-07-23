@@ -31,11 +31,34 @@ const chart = new Bars(chartContainer, config);
 chart.init();
 ```
 
+### **Line Chart**
+#### Usage:
+```
+import Line from '../lib/Line';
+
+const chartContainer = document.querySelector(.chart);
+const chart = new Line(chartContainer, config);
+
+chart.init();
+```
+
+### **Pie Chart**
+#### Usage:
+```
+import Pie from '../lib/Pie';
+
+const chartContainer = document.querySelector(.chart);
+const chart = new Pie(chartContainer, config);
+
+chart.init();
+```
+
 ### **Config**
 #### chart
 - *chart*.**width** - width of tyhe chart.
 - *chart*.**height** - height of tyhe chart.
-- *chart*.**margin** - object with margins: {top, right, bottom, right}.
+- *chart*.**margin** - object with margin values: {top, right, bottom, right}.
+- *chart*.**barWidth** - desired bar width. If not specified, will be set automatically.
 
 #### xAxis (bar & line)
 - *xAxis*.**title** - title of the xAxis.
@@ -59,6 +82,9 @@ chart.init();
         ]
     }
 ```
+- *series*.**labelKey** - (pie chart only) key in datapoint object, which value should be displayed as label.
+- *series*.**labelClass** - (pie chart only) css class for label.
+
 
 #### tooltip
 - *tooltip*.**className** -  css class for tooltip customization.
