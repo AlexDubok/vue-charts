@@ -1,5 +1,6 @@
 <template>
     <div class='Layout'>
+        <h1>Custom chart library based on d3</h1>
         <pie-chart/>
         <bar-chart/>
         <line-chart/>
@@ -40,6 +41,5 @@ export default {
         min-width: 150px;
         pointer-events: none;
     }
-
 </style>
 
