@@ -53,7 +53,5 @@ export default {
         fill: darkblue;
         text-anchor: middle;
     }
-
-
 </style>
 
